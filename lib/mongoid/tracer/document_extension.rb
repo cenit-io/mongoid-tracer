@@ -32,6 +32,13 @@ module Mongoid
           end
         end
       end
+
+      def set_association_values(association_name, values)
+        send(association_name)
+        target_proxy = instance_variable_get(:"@_#{association_name}")
+        target_proxy.target.clear
+        target_proxy.target.concat(values)
+      end
     end
   end
 end
