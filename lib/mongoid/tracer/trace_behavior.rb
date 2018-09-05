@@ -106,8 +106,8 @@ module Mongoid
         end
       end
 
-      def changes_set
-        @changes_set ||= build_changes_set_from(target_model, attributes_trace, [], {}, previous)
+      def changes_set(previous_trace = nil)
+        @changes_set ||= build_changes_set_from(target_model, attributes_trace, [], {}, previous_trace || previous)
       end
 
       def build_changes_set_from(model, attributes, path, set, trace)
