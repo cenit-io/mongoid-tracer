@@ -15,7 +15,11 @@ module Mongoid
         field :attributes_trace, type: Hash
         field :author_id
 
-        before_save :validates_trace_action, :set_author_id
+        before_save :validates_trace_action!, :set_author_id
+      end
+
+      def validates_trace_action!
+        throw(:abort) unless validates_trace_action
       end
 
       def validates_trace_action
@@ -35,7 +39,6 @@ module Mongoid
         if (author_id = Tracer.author_id)
           self.author_id = author_id
         end
-        errors.empty?
       end
 
       def target_model

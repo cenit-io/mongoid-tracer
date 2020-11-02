@@ -7,7 +7,7 @@ module Mongoid
 
       def current_attributes
         attrs = attributes.except(*trace_ignore)
-        reflect_on_all_associations(:embeds_one, :embeds_many, :has_one, :has_many).each do |relation|
+        self.class.reflect_on_all_associations(:embeds_one, :embeds_many, :has_one, :has_many).each do |relation|
           next unless trace_ignore.exclude?(relation.name.to_s) && (relation.embedded? || trace_references.include?(relation.name.to_s))
           if relation.many?
             unless (docs_attrs = send(relation.name).collect(&:current_attributes)).empty?
