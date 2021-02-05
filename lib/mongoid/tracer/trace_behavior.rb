@@ -193,8 +193,8 @@ module Mongoid
 
       def previous
         unless @previous_cached
-          if (@previous = class_with_options.where(target_id: target_id, :created_at.lt => created_at).desc(:created_at).limit(1).first) && persistence_options
-            @previous = @previous.with(persistence_options)
+          @previous = self.class.with(persistence_context) do |klass|
+            klass.where(target_id: target_id, :created_at.lt => created_at).desc(:created_at).limit(1).first
           end
           @previous_cached = true
         end
@@ -203,20 +203,12 @@ module Mongoid
 
       def next
         unless @next_cached
-          if (@next = class_with_options.where(target_id: target_id, :created_at.gt => created_at).asc(:created_at).limit(1).first) && persistence_options
-            @next = @next.with(persistence_options)
+          @next = self.class.with(persistence_context) do |klass|
+            klass.where(target_id: target_id, :created_at.gt => created_at).asc(:created_at).limit(1).first
           end
           @next_cached = true
         end
         @next
-      end
-
-      def class_with_options
-        if persistence_options
-          self.class.with(persistence_options)
-        else
-          self.class
-        end
       end
     end
   end
