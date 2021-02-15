@@ -7,7 +7,7 @@ module Mongoid
       include Mongoid::Timestamps::Created
 
       included do
-        field :action, type: Symbol
+        field :action, type: StringifiedSymbol
         field :message, type: String
         field :target_model_name
         field :target_id
