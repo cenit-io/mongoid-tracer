@@ -25,7 +25,7 @@ module Mongoid
         trace_include.each do |property|
           next if trace_ignore.include?(property)
           case (value = send(property))
-          when NilClass, String, Numeric, Boolean, Hash, Array
+          when NilClass, String, Numeric, Mongoid::Boolean, Hash, Array
             block.call(property, value)
           else
             fail "Illegal property trace value type: #{value.class}"
